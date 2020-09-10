@@ -51,6 +51,17 @@ MonoBehaviour:
   - {fileID: 6554620371838008082, guid: 7ea1399cccdd263408b30af0188d9191, type: 3}
   xSize: 17
   ySize: 6
+  WaveStepRight: 0.3
+  WaveStepDown: 0.5
+  WaveSpeed: 0.4
+  Clipaudio: {fileID: 8300000, guid: 25c64998f4741e846a7abaad556f8412, type: 3}
+  CurrentRow: 0
+  CanMove: 1
+  Walkright: 1
+  Totalalien: 0
+  Remainingalien: 0
+  bulletCount: 0
+  bunker: {fileID: 5575506661075363309, guid: 3562ec913f65d454bba24f2a26b9f008, type: 3}
 --- !u!82 &1030532184859496449
 AudioSource:
   m_ObjectHideFlags: 0
