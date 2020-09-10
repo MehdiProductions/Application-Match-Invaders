@@ -5,20 +5,28 @@ using UnityEngine;
 public class MainCharacter : MonoBehaviour
 {
     [SerializeField] private float speed;
+    Vector2 PositionPlayer;
+    float limitx = 11f;
+    public bool CanMove = true;
+
     void Start()
     {
-        
+        PositionPlayer = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        MovePlayer();
+    }
+    void MovePlayer()
+    {
+        if (CanMove == true)
         {
-            transform.position += Vector3.left * speed;
-        } else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.position += Vector3.right * speed;
+            PositionPlayer.x += Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+            PositionPlayer.x = Mathf.Clamp(PositionPlayer.x, -limitx, limitx);
+            transform.position = PositionPlayer;
         }
     }
+
 }
