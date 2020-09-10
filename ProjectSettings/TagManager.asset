@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Alien0
+  - Alien1
+  - Alien2
+  - Alien3
+  - Alien4
+  - Alien5
+  - Alien6
+  - Alien7
+  - Alien8
+  - Alien9
   layers:
   - Default
   - TransparentFX
