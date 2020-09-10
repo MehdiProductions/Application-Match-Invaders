@@ -4,16 +4,37 @@ using UnityEngine;
 
 public class Alien : MonoBehaviour
 {
+
+    private SpriteRenderer render;
     private int maxMatch;
     private bool matchFound = false;
+    Sprite sprite1;
+    public Sprite Sprite2;
+    public GameObject ExplosionPrefab;
     public int aliensKilled = 0;
-    private SpriteRenderer render;
+    public GameObject bullet;
+    LevelManager levelmanager;
 
 
     private void Awake()
     {
-        maxMatch = 4;
+
         render = GetComponent<SpriteRenderer>();
+        sprite1 = render.sprite;
+        maxMatch = 4;
+        levelmanager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        InvokeRepeating("ShootBullet", Random.Range(1f, 6f), Random.Range(1f, 3f));
+
+    }
+
+
+    void AnimateAlien()
+    {
+        if (render.sprite)
+        {
+            Sprite nextSprite = render.sprite == sprite1 ? Sprite2 : sprite1;
+            render.sprite = nextSprite;
+        }
     }
 
 
@@ -46,9 +67,9 @@ public class Alien : MonoBehaviour
                 matchingAliens[i].GetComponent<SpriteRenderer>().sprite = null;
                 matchingAliens[i].transform.name = "DEAD";
                 matchingAliens[i].transform.tag = "Deadalien";
-                
+                levelmanager.Remainingalien -= 1;
                 aliensKilled += 1;
-                
+                Instantiate(ExplosionPrefab, matchingAliens[i].transform.position, Quaternion.identity, transform);
             }
             matchFound = true;
         }
@@ -60,9 +81,9 @@ public class Alien : MonoBehaviour
                 matchingAliens[i].GetComponent<SpriteRenderer>().sprite = null;
                 matchingAliens[i].transform.name = "DEAD";
                 matchingAliens[i].transform.tag = "Deadalien";
-                
+                levelmanager.Remainingalien -= 1;
                 aliensKilled += 1;
-                
+                Instantiate(ExplosionPrefab, matchingAliens[i].transform.position, Quaternion.identity, transform);
             }
             matchFound = true;
         }
@@ -83,8 +104,44 @@ public class Alien : MonoBehaviour
             transform.name = "DEAD";
             transform.tag = "Deadalien";
             matchFound = false;
-            
+            levelmanager.Remainingalien -= 1;
+            Instantiate(ExplosionPrefab, transform.position, Quaternion.identity, transform);
+
         }
 
     }
+
+    public void ShootBullet()
+    {
+        if (transform.tag == "Alien" + levelmanager.CurrentRow && levelmanager.bulletCount < 5 && transform.position.y > -3.8f)
+        {
+            Instantiate(bullet, new Vector2(transform.position.x, transform.position.y - 0.3f), Quaternion.identity);
+        }
+    }
+
+    //public void StopShooting() //new
+    //{
+    //    CancelInvoke();
+    //}
+
+    private void OnTriggerEnter2D(Collider2D col) // new
+    {
+        if (col.gameObject.name == "Bottom")
+        {
+            GameOver();
+        }
+    }
+    void GameOver() // new
+    {
+        Debug.Log("GameOver");
+    }
+
 }
+
+
+
+
+
+
+
+

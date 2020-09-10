@@ -3,21 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary> Manages the state of the level </summary>
-
-
 public class LevelManager : MonoBehaviour
 {
-
+    //public static LevelManager instance;
     public List<GameObject> alientype = new List<GameObject>();
     public int xSize, ySize;
+    [SerializeField] private float WaveStepRight = 1f, WaveStepDown = 1f, WaveSpeed = 0.8f;
+    public AudioClip Clipaudio;
+    public int CurrentRow;
+
+    AudioSource audiosource;
+
     private GameObject[,] aliens;
+
+
+    public bool CanMove = true;
+    public bool Walkright = true;
+    public int Totalalien;
+    public int Remainingalien;
+    public int bulletCount;
+
+    Vector2 PositionInitialWave;
+    MainCharacter maincharacter;
+
+    public GameObject bunker; // new
+
+    private void Awake()//newwww
+    {
+        transform.name = "LevelManager";
+
+        
+
+    }
 
     void Start()
     {
+        //instance = GetComponent<LevelManager>();
+
         xSize = Mathf.Clamp(xSize, 1, 17);
         ySize = Mathf.Clamp(ySize, 1, 10);
+        audiosource = GetComponent<AudioSource>();
         Vector2 offset = alientype[0].GetComponent<SpriteRenderer>().bounds.size;
         GenerateGrid(offset.x + 0.4f, offset.y + 0.4f);
+        StartCoroutine(MoveWave());
+        PositionInitialWave = transform.position;
+        maincharacter = GameObject.Find("Player").GetComponent<MainCharacter>();
+        CurrentRow = 0;
+        bulletCount = 0;
+        bulletCount = Mathf.Clamp(bulletCount, 0, 5);
     }
 
     private void GenerateGrid(float xOffset, float yOffset)
@@ -35,10 +68,91 @@ public class LevelManager : MonoBehaviour
                 alien.transform.tag = "Alien" + y;
 
                 aliens[x, y] = alien;
-                
+                //alien.transform.parent = transform;
+                Totalalien = transform.childCount;
+                Remainingalien = Totalalien;
             }
+        }
+
+        for (int i = 0; i < 4; i++) // new
+        {
+            Instantiate(bunker, new Vector2(transform.position.x + 1 + 5.5f * i, transform.position.y - 4.5f), Quaternion.identity, GameObject.Find("Bunkers").transform);
+        }
+
+    }
+
+    IEnumerator MoveWave()
+    {
+        while (CanMove)
+        {
+            Vector2 direction = Walkright ? Vector2.right : Vector2.left;
+            transform.Translate(direction * WaveStepRight);
+            BroadcastMessage("AnimateAlien");
+            PlayWaveSound();
+            NoAlienRemaining();
+            CheckRow();
+            SpeedWave();
+            yield return new WaitForSeconds(WaveSpeed);
+
         }
     }
 
+    public void WaveReachesLimit()
+    {
+        Walkright = !Walkright;
+        transform.Translate(Vector2.down * WaveStepDown);
+    }
+
+    void PlayWaveSound()
+    {
+        audiosource.PlayOneShot(Clipaudio);
+    }
+
+    void NoAlienRemaining()
+    {
+        if (Remainingalien == 0)
+        {
+            Debug.Log("WIN");
+            StopWave(); // new
+        }
+    }
+
+    void CheckRow()
+    {
+        for (int i = 0; i <= ySize - 1; i++)
+            if (GameObject.FindGameObjectWithTag("Alien" + i) == null)
+            {
+
+                if (i == CurrentRow)
+                {
+                    CurrentRow = i + 1;
+                }
+            }
+
+    }
+
+    public void StopWave()
+    {
+        StopAllCoroutines();
+        //BroadcastMessage("StopShooting"); // new
+    }
+
+    public void RestartWave(float delay)
+    {
+        StartCoroutine(Restart(delay));
+    }
+
+    void SpeedWave()
+    {
+        WaveSpeed = Remainingalien / 100f;
+    }
+
+    IEnumerator Restart(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        transform.position = PositionInitialWave;
+        StartCoroutine(MoveWave());
+        maincharacter.InitPlayer();
+    }
 
 }
