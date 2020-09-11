@@ -15,12 +15,19 @@ public class Lives : MonoBehaviour
     public Image heart;
     public float yOffset = 1;
     public float xOffset = 32;
+    GameManager GameManager;
 
     private void Awake()
     {
+        GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        
 
+    }
+
+    private void Start()
+    {
+        health = GameManager.lives;
         SetHealth();
-
     }
     public void SetHealth()
     {
@@ -31,8 +38,9 @@ public class Lives : MonoBehaviour
 
         for (int i = 0; i < health - 1; i++)
         {
-
-            heartprefab[i] = Instantiate(heart, new Vector2(72 + transform.position.x + xOffset * i, transform.position.y + yOffset), Quaternion.identity);
+            Debug.Log("OK");
+            heartprefab[i] = Instantiate(heart, new Vector2(175 + transform.position.x + xOffset * i, transform.position.y + yOffset), Quaternion.identity);
+            heartprefab[i].transform.localScale *= 2.5f;
             heartprefab[i].transform.parent = transform;
             hearts.Add(heartprefab[i]);
 

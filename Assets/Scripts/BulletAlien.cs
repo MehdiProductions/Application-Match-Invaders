@@ -15,6 +15,7 @@ public class BulletAlien : MonoBehaviour
         levelmanager.bulletCount += 1;
         GameObject BulletsAlien = GameObject.Find("BulletsAlien");
         transform.parent = BulletsAlien.transform;
+
     }
 
 

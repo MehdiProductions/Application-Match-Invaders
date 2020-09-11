@@ -9,14 +9,16 @@ public class BulletPlayer : MonoBehaviour
     Rigidbody2D rb;
     private MainCharacter maincharacter;
     LevelManager levelmanager;
-
+    GameManager GameManager;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         maincharacter = GameObject.Find("Player").GetComponent<MainCharacter>();
         levelmanager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-
+        GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        Force = GameManager.speedBullets;
+        DestroyTime = 600 / Force;
     }
 
 

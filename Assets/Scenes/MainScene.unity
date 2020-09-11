@@ -615,8 +615,8 @@ MonoBehaviour:
   fullHeart: {fileID: 21300000, guid: 72fc678bd5a90da49bcc7dfad0636d6c, type: 3}
   emptyHeart: {fileID: 21300000, guid: 26ecac125fa82e54caa1fecc9dfd643d, type: 3}
   heart: {fileID: 1139011430}
-  yOffset: 11.5
-  xOffset: 32
+  yOffset: 27
+  xOffset: 80
 --- !u!114 &1139011430 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7324348150497513758, guid: bcfcffe2b81740641a37d10730d5bf66,
@@ -972,6 +972,13 @@ MonoBehaviour:
   LevelManager: {fileID: 1030532184859496476, guid: f1430e2f1c8755d499e0c842e8d7694c,
     type: 3}
   Player: {fileID: 6554620371838008082, guid: dc31cab34e45d9249aeb634052e3b0f0, type: 3}
+  speedEnemies: 10
+  speedPlayer: 20
+  speedBullets: 200
+  lives: 4
+  xSize: 17
+  ySize: 6
+  settings: {fileID: 11400000, guid: c94547350ea36e64393e64fcaa0cefa3, type: 2}
   pauseMenuUI: {fileID: 164245091}
   endMenuUI: {fileID: 1829421014}
   txtScore: {fileID: 2049953701}
@@ -1013,6 +1020,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LevelManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030532184859496478, guid: f1430e2f1c8755d499e0c842e8d7694c,
+        type: 3}
+      propertyPath: initialSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030532184859496478, guid: f1430e2f1c8755d499e0c842e8d7694c,
+        type: 3}
+      propertyPath: xSize
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1030532184859496479, guid: f1430e2f1c8755d499e0c842e8d7694c,
         type: 3}

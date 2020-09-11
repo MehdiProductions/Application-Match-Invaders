@@ -19,8 +19,11 @@ public class MainCharacter : MonoBehaviour
     LevelManager Wave;
     Lives lives;
     bool detect = true;
-    public int Highscore; 
+    public int Highscore;
+    GameManager GameManager;
+
     public int Score
+
     {
         get
         {
@@ -42,10 +45,13 @@ public class MainCharacter : MonoBehaviour
     private void Awake()
     {
         transform.name = "Player";
+        GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        
     }
 
     void Start()
     {
+        speed = GameManager.speedPlayer;
         PositionPlayer = transform.position;
         Canon = transform.Find("Canon");
         txtScore = GameObject.Find("TxtScore").GetComponent<Text>();

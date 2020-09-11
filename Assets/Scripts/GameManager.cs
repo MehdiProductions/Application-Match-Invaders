@@ -9,16 +9,28 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject LevelManager;
     [SerializeField] private GameObject Player;
-    public static bool GameIsPaused = false;
+    public float speedEnemies;
+    public float speedPlayer;
+    public float speedBullets;
+    public int lives;
+    public int xSize, ySize;
+
+    public Settings settings;
+    private bool GameIsPaused = false;
     public GameObject pauseMenuUI;
     public GameObject endMenuUI;
     public Text txtScore;
     public Text txthighScore;
-    
 
-    private void Start()
+    private void Awake()
     {
-
+        Time.timeScale = 1;
+        speedEnemies = settings.speedEnemies;
+        speedPlayer = settings.speedPlayer;
+        speedBullets = settings.speedBullets;
+        lives = settings.lives;
+        xSize = settings.xSize;
+        ySize = settings.ySize;
     }
 
     void Update()

@@ -6,16 +6,17 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     
-    [SerializeField] private List<GameObject> alientype = new List<GameObject>();
-    public int xSize, ySize;
+    [SerializeField] private List<GameObject> alientype = new List<GameObject>();    
     [SerializeField] private float WaveStepRight = 1f, WaveStepDown = 1f, WaveSpeed = 0.8f;
+    [SerializeField] private float initialSpeed = 0;
+    public int xSize, ySize;
     public AudioClip Clipaudio;
     public int CurrentRow;
 
     AudioSource audiosource;
 
     private GameObject[,] aliens;
-
+    GameManager GameManager;
 
     public bool CanMove = true;
     public bool Walkright = true;
@@ -31,15 +32,17 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         transform.name = "LevelManager";
-
-        GameObject.Find("TxtLives").GetComponent<Lives>().ResetLives();
-
+        GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        
     }
 
     void Start()
     {
-        
 
+        GameObject.Find("TxtLives").GetComponent<Lives>().ResetLives();
+        xSize = GameManager.xSize;
+        ySize = GameManager.ySize;
+        initialSpeed = GameManager.speedEnemies;
         xSize = Mathf.Clamp(xSize, 1, 17);
         ySize = Mathf.Clamp(ySize, 1, 10);
         audiosource = GetComponent<AudioSource>();
@@ -113,7 +116,7 @@ public class LevelManager : MonoBehaviour
         if (Remainingalien == 0)
         {
             Debug.Log("WIN");
-            StopWave(); // new
+            StopWave(); 
         }
     }
 
@@ -144,7 +147,7 @@ public class LevelManager : MonoBehaviour
 
     void SpeedWave()
     {
-        WaveSpeed = Remainingalien / 100f;
+        WaveSpeed = (Remainingalien - initialSpeed) / 100f;
     }
 
     IEnumerator Restart(float delay)
