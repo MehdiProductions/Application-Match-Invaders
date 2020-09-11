@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Lives : MonoBehaviour
 {
 
-    [SerializeField] private int health = 3;
+    public int health = 3;
     private int iniHealth;
     public Image[] heartprefab;
     private List<Image> hearts = new List<Image>();
@@ -79,6 +80,11 @@ public class Lives : MonoBehaviour
         {
             hearts[i].sprite = fullHeart;
             
+        }
+
+        if (health < 0)
+        {
+            throw new ArgumentOutOfRangeException();
         }
     }
 
