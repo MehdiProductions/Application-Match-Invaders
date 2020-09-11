@@ -8,6 +8,7 @@ public class MainCharacter : MonoBehaviour
 
     [SerializeField] private float speed;
     public GameObject BulletPrefab;
+    private GameObject NewHighScore;
     public bool CanShoot = true;
     public bool CanMove = true;
     Vector2 PositionPlayer;
@@ -19,6 +20,7 @@ public class MainCharacter : MonoBehaviour
     LevelManager Wave;
     Lives lives;
     bool detect = true;
+    
     public int Highscore;
     GameManager GameManager;
 
@@ -36,10 +38,14 @@ public class MainCharacter : MonoBehaviour
             txtScore.text = "Score: " + score;
             if (Score > PlayerPrefs.GetInt("HighScore")) 
             {
+               
                 Highscore = Score;
                 txthighScore.text = "HS: " + Highscore;
                 PlayerPrefs.SetInt("HighScore", Highscore);
+                StartCoroutine(newHighscored());
             }
+
+            
         }
     }
     private void Awake()
@@ -52,13 +58,17 @@ public class MainCharacter : MonoBehaviour
     void Start()
     {
         speed = GameManager.speedPlayer;
+        speed = Mathf.Clamp(speed, 1, 30);
         PositionPlayer = transform.position;
         Canon = transform.Find("Canon");
         txtScore = GameObject.Find("TxtScore").GetComponent<Text>();
         Wave = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         lives = GameObject.Find("TxtLives").GetComponent<Lives>();
         txthighScore = GameObject.Find("TxtHighscore").GetComponent<Text>(); 
-        txthighScore.text = "HS: " + PlayerPrefs.GetInt("HighScore").ToString(); 
+        txthighScore.text = "HS: " + PlayerPrefs.GetInt("HighScore").ToString();
+        NewHighScore = GameObject.Find("NewHighScore");
+        NewHighScore.SetActive(false);
+
     }
 
 
@@ -140,5 +150,15 @@ public class MainCharacter : MonoBehaviour
         CanShoot = true;
         CanMove = true;
 
+    }
+
+    IEnumerator newHighscored()
+    {
+        if (Score > 300)
+        {
+            NewHighScore.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            NewHighScore.SetActive(false);
+        }
     }
 }

@@ -147,7 +147,14 @@ public class LevelManager : MonoBehaviour
 
     void SpeedWave()
     {
-        WaveSpeed = (Remainingalien - initialSpeed) / 100f;
+        if (WaveSpeed >= 0.2f)
+        {
+            WaveSpeed = (Remainingalien - initialSpeed) / 100f;
+        }
+        else
+        {
+            WaveSpeed = 0.2f;
+        }
     }
 
     IEnumerator Restart(float delay)
