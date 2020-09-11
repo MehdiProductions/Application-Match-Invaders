@@ -57,7 +57,7 @@ public class BulletPlayer : MonoBehaviour
                 Destroy(gameObject);
                 col.gameObject.GetComponent<Alien>().ClearAllMatches();
                 aliensKilled = col.gameObject.GetComponent<Alien>().aliensKilled + 1;
-                
+                maincharacter.Score += fibonacci(aliensKilled) * 10 * aliensKilled;
 
 
             }

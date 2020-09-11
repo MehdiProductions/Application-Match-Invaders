@@ -6,14 +6,15 @@ public class BulletAlien : MonoBehaviour
 {
     [SerializeField] private float DestroyTime = 1f;
     LevelManager levelmanager;
-
+    
 
     void Start()
     {
+        
         levelmanager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         levelmanager.bulletCount += 1;
-
-
+        GameObject BulletsAlien = GameObject.Find("BulletsAlien");
+        transform.parent = BulletsAlien.transform;
     }
 
 
@@ -49,5 +50,10 @@ public class BulletAlien : MonoBehaviour
             col.GetComponent<SpriteRenderer>().color = new Color(0, 0.2f, 0, a -= 0.25f);
             Destroy(gameObject);
         }
+    }
+
+    public void Delete()
+    {
+        Destroy(gameObject);
     }
 }

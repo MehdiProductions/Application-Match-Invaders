@@ -1,22 +1,77 @@
 ﻿using System.Collections;
-using UnityEditor.SceneManagement;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-/// <summary> Manages the state of the whole application </summary>
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private string gameScene;
 
-    public void Play()
+    [SerializeField] private GameObject LevelManager;
+    [SerializeField] private GameObject Player;
+    public static bool GameIsPaused = false;
+    public GameObject pauseMenuUI;
+    public GameObject endMenuUI;
+    public Text txtScore;
+    public Text txthighScore;
+    
+
+    private void Start()
     {
-        StartCoroutine(LoadScene(gameScene));
+
     }
 
-    private IEnumerator LoadScene(string sceneName)
+    void Update()
     {
-        Debug.Log("Loading game!");
-        yield return new WaitForSeconds(.4f);
-        EditorSceneManager.LoadScene(sceneName);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameIsPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
     }
+
+    public void Resume()
+    {
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        GameIsPaused = false;
+    }
+    void Pause()
+    {
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        GameIsPaused = true;
+    }
+    public void Endgame()
+    {
+        endMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        txtScore.text = "LAST SCORE: " + GameObject.Find("Player").GetComponent<MainCharacter>().Score;
+        txthighScore.text = "HIGH SCORE: " + PlayerPrefs.GetInt("HighScore");
+        GameObject.Find("LevelManager").GetComponent<LevelManager>().ClearScene();
+        Destroy(GameObject.Find("LevelManager"));
+        Destroy(GameObject.Find("Player"));
+        
+        
+
+    }
+    public void RestartGame()
+    {
+        Instantiate(LevelManager, new Vector3(-9, 1, 0), Quaternion.identity);
+        Instantiate(Player, new Vector3(0, -4.7f, 0), Quaternion.identity);
+        endMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+    }
+    public void QuitGame()
+    {
+        SceneManager.LoadScene("Home");
+    }
+
+    
 }

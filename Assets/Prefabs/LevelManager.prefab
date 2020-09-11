@@ -49,7 +49,7 @@ MonoBehaviour:
   - {fileID: 6554620371838008082, guid: 4a997cc1d240fbc42ae5cc43d9298654, type: 3}
   - {fileID: 6554620371838008082, guid: dffa27d742feeb8439eba71e67818142, type: 3}
   - {fileID: 6554620371838008082, guid: 7ea1399cccdd263408b30af0188d9191, type: 3}
-  xSize: 17
+  xSize: 3
   ySize: 6
   WaveStepRight: 0.3
   WaveStepDown: 0.5

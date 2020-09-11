@@ -119,19 +119,15 @@ public class Alien : MonoBehaviour
         }
     }
 
-    //public void StopShooting() //new
-    //{
-    //    CancelInvoke();
-    //}
-
-    private void OnTriggerEnter2D(Collider2D col) // new
+  
+    private void OnTriggerEnter2D(Collider2D col) 
     {
         if (col.gameObject.name == "Bottom")
         {
             GameOver();
         }
     }
-    void GameOver() // new
+    void GameOver() 
     {
         Debug.Log("GameOver");
     }

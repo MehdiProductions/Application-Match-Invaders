@@ -14,104 +14,125 @@ public class MainCharacter : MonoBehaviour
     Transform Canon;
     float limitx = 11f;
     private int score = 0;
- 
-
+    Text txtScore;
+    Text txthighScore; 
     LevelManager Wave;
-    
+    Lives lives;
     bool detect = true;
-    
-    private void Awake()
-{
-    transform.name = "Player";
-}
-
-void Start()
-{
-    PositionPlayer = transform.position;
-    Canon = transform.Find("Canon");
-
-    Wave = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-    
-}
-
-
-void Update()
-{
-    MovePlayer();
-    PlayerShoot();
-}
-
-void MovePlayer()
-{
-    if (CanMove == true)
+    public int Highscore; 
+    public int Score
     {
-        PositionPlayer.x += Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-        PositionPlayer.x = Mathf.Clamp(PositionPlayer.x, -limitx, limitx);
-        transform.position = PositionPlayer;
-    }
-}
-
-void PlayerShoot()
-{
-
-    if (Input.GetKeyDown(KeyCode.Space) && CanShoot)
-    {
-        CanShoot = false;
-        Instantiate(BulletPrefab, Canon.position, Quaternion.identity);
-    }
-
-}
-
-private void OnTriggerEnter2D(Collider2D col)
-{
-    for (int i = 0; i < Wave.ySize; i++)
-    {
-        if (col.CompareTag("Alien" + i) && detect && col.GetComponent<SpriteRenderer>().sprite)
+        get
         {
-            detect = false;
-            StartCoroutine(Aliencollision());
-            PlayerExplosion();
+            return score;
+        }
+
+        set
+        {
+            score = value;
+            txtScore.text = "Score: " + score;
+            if (Score > PlayerPrefs.GetInt("HighScore")) 
+            {
+                Highscore = Score;
+                txthighScore.text = "HS: " + Highscore;
+                PlayerPrefs.SetInt("HighScore", Highscore);
+            }
         }
     }
-    if (col.CompareTag("BulletAlien"))
+    private void Awake()
     {
-        PlayerExplosionBullet();
+        transform.name = "Player";
     }
 
-}
-
-IEnumerator Aliencollision()
-{
-    Wave.StopWave();
-    yield return new WaitForSeconds(0.2f);
-    detect = true;
-}
-
-void PlayerExplosion()
-{
-    
-        GetComponent<AudioSource>().Play();
-    Wave.RestartWave(1f);
-    CanShoot = false;
-    CanMove = false;
-    
+    void Start()
+    {
+        PositionPlayer = transform.position;
+        Canon = transform.Find("Canon");
+        txtScore = GameObject.Find("TxtScore").GetComponent<Text>();
+        Wave = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        lives = GameObject.Find("TxtLives").GetComponent<Lives>();
+        txthighScore = GameObject.Find("TxtHighscore").GetComponent<Text>(); 
+        txthighScore.text = "HS: " + PlayerPrefs.GetInt("HighScore").ToString(); 
     }
 
-void PlayerExplosionBullet()
-{
-    
+
+    void Update()
+    {
+        MovePlayer();
+        PlayerShoot();
+    }
+
+    void MovePlayer()
+    {
+        if (CanMove == true)
+        {
+            PositionPlayer.x += Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+            PositionPlayer.x = Mathf.Clamp(PositionPlayer.x, -limitx, limitx);
+            transform.position = PositionPlayer;
+        }
+    }
+
+    void PlayerShoot()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Space) && CanShoot)
+        {
+            CanShoot = false;
+            Instantiate(BulletPrefab, Canon.position, Quaternion.identity);
+        }
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        for (int i = 0; i < Wave.ySize; i++)
+        {
+            if (col.CompareTag("Alien" + i) && detect && col.GetComponent<SpriteRenderer>().sprite)
+            {
+                detect = false;
+                StartCoroutine(Aliencollision());
+                PlayerExplosion();
+            }
+        }
+        if (col.CompareTag("BulletAlien"))
+        {
+            PlayerExplosionBullet();
+        }
+
+    }
+
+    IEnumerator Aliencollision()
+    {
+        Wave.StopWave();
+        yield return new WaitForSeconds(0.2f);
+        detect = true;
+    }
+
+    void PlayerExplosion()
+    {
+        GetComponent<Animator>().SetTrigger("Explosion");
         GetComponent<AudioSource>().Play();
-    
-    CanShoot = false;
-    CanMove = false;
-    Invoke("InitPlayer", 1f);
-}
+        Wave.RestartWave(1f);
+        CanShoot = false;
+        CanMove = false;
+        lives.LooseLife();
+    }
 
-public void InitPlayer()
-{
-    
-    CanShoot = true;
-    CanMove = true;
+    void PlayerExplosionBullet()
+    {
+        GetComponent<Animator>().SetTrigger("Explosion");
+        GetComponent<AudioSource>().Play();
+        lives.LooseLife();
+        CanShoot = false;
+        CanMove = false;
+        Invoke("InitPlayer", 1f);
+    }
 
-}
+    public void InitPlayer()
+    {
+        GetComponent<Animator>().SetTrigger("Regular");
+        CanShoot = true;
+        CanMove = true;
+
+    }
 }

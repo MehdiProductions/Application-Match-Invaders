@@ -5,8 +5,8 @@ using UnityEngine;
 /// <summary> Manages the state of the level </summary>
 public class LevelManager : MonoBehaviour
 {
-    //public static LevelManager instance;
-    public List<GameObject> alientype = new List<GameObject>();
+    
+    [SerializeField] private List<GameObject> alientype = new List<GameObject>();
     public int xSize, ySize;
     [SerializeField] private float WaveStepRight = 1f, WaveStepDown = 1f, WaveSpeed = 0.8f;
     public AudioClip Clipaudio;
@@ -26,19 +26,19 @@ public class LevelManager : MonoBehaviour
     Vector2 PositionInitialWave;
     MainCharacter maincharacter;
 
-    public GameObject bunker; // new
+    public GameObject bunker; 
 
-    private void Awake()//newwww
+    private void Awake()
     {
         transform.name = "LevelManager";
 
-        
+        GameObject.Find("TxtLives").GetComponent<Lives>().ResetLives();
 
     }
 
     void Start()
     {
-        //instance = GetComponent<LevelManager>();
+        
 
         xSize = Mathf.Clamp(xSize, 1, 17);
         ySize = Mathf.Clamp(ySize, 1, 10);
@@ -68,13 +68,13 @@ public class LevelManager : MonoBehaviour
                 alien.transform.tag = "Alien" + y;
 
                 aliens[x, y] = alien;
-                //alien.transform.parent = transform;
+               
                 Totalalien = transform.childCount;
                 Remainingalien = Totalalien;
             }
         }
 
-        for (int i = 0; i < 4; i++) // new
+        for (int i = 0; i < 4; i++) 
         {
             Instantiate(bunker, new Vector2(transform.position.x + 1 + 5.5f * i, transform.position.y - 4.5f), Quaternion.identity, GameObject.Find("Bunkers").transform);
         }
@@ -134,7 +134,7 @@ public class LevelManager : MonoBehaviour
     public void StopWave()
     {
         StopAllCoroutines();
-        //BroadcastMessage("StopShooting"); // new
+        
     }
 
     public void RestartWave(float delay)
@@ -153,6 +153,20 @@ public class LevelManager : MonoBehaviour
         transform.position = PositionInitialWave;
         StartCoroutine(MoveWave());
         maincharacter.InitPlayer();
+    }
+
+    public void ClearScene()
+    {
+        
+            if (GameObject.Find("Bunkers").transform.childCount != 0)
+            {
+                GameObject.Find("Bunkers").BroadcastMessage("Delete");
+            }
+            if (GameObject.Find("BulletsAlien").transform.childCount != 0)
+            {
+                GameObject.Find("BulletsAlien").BroadcastMessage("Delete");
+            }
+        
     }
 
 }
