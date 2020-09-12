@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
+    // Whole Game Logic and Settings HUB
     [SerializeField] private GameObject LevelManager;
     [SerializeField] private GameObject Player;
 
@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject endMenuUI;
     public Text txtScore;
     public Text txthighScore;
+     
 
     private void Awake()
     {
