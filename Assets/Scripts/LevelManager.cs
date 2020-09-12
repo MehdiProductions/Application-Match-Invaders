@@ -8,26 +8,27 @@ public class LevelManager : MonoBehaviour
     
     [SerializeField] private List<GameObject> alientype = new List<GameObject>();    
     [SerializeField] private float WaveStepRight = 1f, WaveStepDown = 1f, WaveSpeed = 0.8f;
-    [SerializeField] private float initialSpeed = 0;
-    public int xSize, ySize;
-    public AudioClip Clipaudio;
-    public int CurrentRow;
+    [SerializeField] private float initialSpeed = 0;  
 
-    AudioSource audiosource;
-
+    
+    private GameObject transition;
     private GameObject[,] aliens;
-    GameManager GameManager;
 
+    public int xSize, ySize;    
+    public int CurrentRow;
     public bool CanMove = true;
     public bool Walkright = true;
     public int Totalalien;
     public int Remainingalien;
     public int bulletCount;
+    public GameObject bunker;
+    public AudioClip Clipaudio;
 
     Vector2 PositionInitialWave;
     MainCharacter maincharacter;
+    AudioSource audiosource;
+    GameManager GameManager;
 
-    public GameObject bunker; 
 
     private void Awake()
     {
@@ -54,6 +55,9 @@ public class LevelManager : MonoBehaviour
         CurrentRow = 0;
         bulletCount = 0;
         bulletCount = Mathf.Clamp(bulletCount, 0, 5);
+        transition = GameObject.Find("Transition");
+        transition.transform.localPosition = new Vector3(-284,  242, 0);
+        InvokeRepeating("PlaneTransition", 0, 0.01f);
     }
 
     private void GenerateGrid(float xOffset, float yOffset)
@@ -177,6 +181,10 @@ public class LevelManager : MonoBehaviour
                 GameObject.Find("BulletsAlien").BroadcastMessage("Delete");
             }
         
+    }
+    void PlaneTransition()
+    {
+        transition.transform.localPosition = new Vector3(transition.transform.localPosition.x, transition.transform.localPosition.y + 10, transition.transform.localPosition.z);
     }
 
 }

@@ -9,14 +9,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject LevelManager;
     [SerializeField] private GameObject Player;
+
+    private bool GameIsPaused = false;
+
     public float speedEnemies;
     public float speedPlayer;
     public float speedBullets;
     public int lives;
     public int xSize, ySize;
-
-    public Settings settings;
-    private bool GameIsPaused = false;
+    public Settings settings;    
     public GameObject pauseMenuUI;
     public GameObject endMenuUI;
     public Text txtScore;

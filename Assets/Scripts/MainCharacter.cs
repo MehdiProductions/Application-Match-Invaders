@@ -8,25 +8,31 @@ public class MainCharacter : MonoBehaviour
 {
 
     [SerializeField] private float speed;
-    public GameObject BulletPrefab;
+    
     private GameObject NewHighScore;
     private GameObject NewHighScore500;
+    private int score = 0;
+
+    public GameObject BulletPrefab;
+    public int Highscore;
     public bool CanShoot = true;
     public bool CanMove = true;
+
+    bool detect = true;
+    bool almostHS = true;
+    float limitx = 11f;
+
     Vector2 PositionPlayer;
     Transform Canon;
-    float limitx = 11f;
-    private int score = 0;
     Text txtScore;
     Text txthighScore; 
     LevelManager Wave;
-    Lives lives;
-    bool detect = true;
-    bool almostHS = true;
-    
-    
-    public int Highscore;
+    Lives lives;    
+    CameraShake cameraShake;
     GameManager GameManager;
+
+
+
 
     public int Score
 
@@ -83,9 +89,12 @@ public class MainCharacter : MonoBehaviour
         NewHighScore500 = GameObject.Find("NewHighScore500");
         NewHighScore.GetComponent<Text>().color = new Color(0, 1, 0, 0);
         NewHighScore500.GetComponent<Text>().color = new Color(1, 0, 0, 0);
+        NewHighScore500.GetComponentInChildren<MeshRenderer>().enabled = false;
         Score = 0;
         txtScore.text = "Score: " + score;
         InitialImageTemperature();
+        cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+        InitialVignette();
     }
 
 
@@ -150,6 +159,8 @@ public class MainCharacter : MonoBehaviour
         CanShoot = false;
         CanMove = false;
         lives.LooseLife();
+        
+
     }
 
     void PlayerExplosionBullet()
@@ -160,6 +171,8 @@ public class MainCharacter : MonoBehaviour
         CanShoot = false;
         CanMove = false;
         Invoke("InitPlayer", 1f);
+        StartCoroutine(cameraShake.Shake(0.15f, 0.4f));
+        Vignette();
     }
 
     public void InitPlayer()
@@ -184,9 +197,10 @@ public class MainCharacter : MonoBehaviour
     {
         
             NewHighScore500.GetComponent<Text>().color = new Color(1, 0, 0, 1);
+            NewHighScore500.GetComponentInChildren<MeshRenderer>().enabled = true;
             yield return new WaitForSeconds(3f);
             NewHighScore500.GetComponent<Text>().color = new Color(1, 0, 0, 0);
-        
+            NewHighScore500.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
 
     void ImageTemperature()
@@ -203,5 +217,21 @@ public class MainCharacter : MonoBehaviour
         ColorGrading colorGradingLayer = null;
         volume.profile.TryGetSettings(out colorGradingLayer);
         colorGradingLayer.temperature.value = -70;
+    }
+
+    void Vignette()
+    {
+        PostProcessVolume volume = GameObject.Find("PostProcessing").GetComponent<PostProcessVolume>();
+        Vignette vignette = null;
+        volume.profile.TryGetSettings(out vignette);
+        vignette.intensity.value += 0.14f;
+    }
+
+    void InitialVignette()
+    {
+        PostProcessVolume volume = GameObject.Find("PostProcessing").GetComponent<PostProcessVolume>();
+        Vignette vignette = null;
+        volume.profile.TryGetSettings(out vignette);
+        vignette.intensity.value = 0;
     }
 }

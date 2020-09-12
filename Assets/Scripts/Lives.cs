@@ -7,15 +7,18 @@ using System;
 public class Lives : MonoBehaviour
 {
 
-    public int health = 3;
+    
     private int iniHealth;
-    public Image[] heartprefab;
     private List<Image> hearts = new List<Image>();
+
+    public Image[] heartprefab;
+    public int health = 3;
     public Sprite fullHeart;
     public Sprite emptyHeart;
     public Image heart;
     public float yOffset = 1;
     public float xOffset = 32;
+
     GameManager GameManager;
 
     private void Awake()

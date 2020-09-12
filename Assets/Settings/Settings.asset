@@ -15,6 +15,6 @@ MonoBehaviour:
   speedEnemies: 10
   speedPlayer: 10
   speedBullets: 300
-  lives: 1
+  lives: 4
   xSize: 17
   ySize: 6
