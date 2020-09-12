@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Alien : MonoBehaviour
 {
-    //This is where I make the Match3 mechanics happen.
+
     private SpriteRenderer render;
     private int maxMatch;
     private bool matchFound = false;
@@ -32,12 +32,12 @@ public class Alien : MonoBehaviour
     {
         if (render.sprite)
         {
-            Sprite nextSprite = render.sprite == sprite1 ? Sprite2 : sprite1; // 3 way boolean condition to make the sprite go from sprite1 to sprite2
+            Sprite nextSprite = render.sprite == sprite1 ? Sprite2 : sprite1;
             render.sprite = nextSprite;
         }
     }
 
-    // Shoot a ray in 4 directions and get the first collider with equal name, change the position of the origin of the rays until none of the objects collidint have the same name
+
     private List<GameObject> FindMatch(Vector2 castDir)
     {
         List<GameObject> matchingAliens = new List<GameObject>();
@@ -50,7 +50,7 @@ public class Alien : MonoBehaviour
         }
         return matchingAliens;
     }
-    // Adding the eligible objectd in a list from both sides top and down and making sure the total doesn't exceed 5, disabling their SpriteRenderer
+
     private void ClearMatch(Vector2[] paths)
     {
         List<GameObject> matchingAliens = new List<GameObject>();
@@ -90,7 +90,7 @@ public class Alien : MonoBehaviour
 
         maxMatch -= matchingAliens.Count;
     }
-    // Main method, with the directions, also disabling the original hit's SpriteRenderer
+
     public void ClearAllMatches()
     {
         if (render.sprite == null)

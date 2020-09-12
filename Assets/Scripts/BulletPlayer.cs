@@ -32,7 +32,7 @@ public class BulletPlayer : MonoBehaviour
     {
         maincharacter.CanShoot = true;
     }
-   
+
     private int fibonacci(int n)
     {
         int a = 0;
@@ -57,9 +57,9 @@ public class BulletPlayer : MonoBehaviour
 
                 int aliensKilled;
                 Destroy(gameObject);
-                col.gameObject.GetComponent<Alien>().ClearAllMatches(); // Call the Match 3 function
+                col.gameObject.GetComponent<Alien>().ClearAllMatches();
                 aliensKilled = col.gameObject.GetComponent<Alien>().aliensKilled + 1;
-                maincharacter.Score += fibonacci(aliensKilled) * 10 * aliensKilled;  // Calculate number of points following the Fibonacci suite
+                maincharacter.Score += fibonacci(aliensKilled) * 10 * aliensKilled;
 
 
             }

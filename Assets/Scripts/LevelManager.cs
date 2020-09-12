@@ -5,8 +5,7 @@ using UnityEngine;
 /// <summary> Manages the state of the level </summary>
 public class LevelManager : MonoBehaviour
 {
-    //Manages behaviour of the Wave and the level in general
-
+    
     [SerializeField] private List<GameObject> alientype = new List<GameObject>();    
     [SerializeField] private float WaveStepRight = 1f, WaveStepDown = 1f, WaveSpeed = 0.8f;
     [SerializeField] private float initialSpeed = 0;  
@@ -40,7 +39,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        // Important to initialise everything for the restart of the game to work propperly, since I reInstance this object.
+
         GameObject.Find("TxtLives").GetComponent<Lives>().ResetLives();
         xSize = GameManager.xSize;
         ySize = GameManager.ySize;
@@ -60,7 +59,7 @@ public class LevelManager : MonoBehaviour
         transition.transform.localPosition = new Vector3(-284,  242, 0);
         InvokeRepeating("PlaneTransition", 0, 0.01f);
     }
-    // Generate Map
+
     private void GenerateGrid(float xOffset, float yOffset)
     {
         aliens = new GameObject[xSize, ySize];
@@ -124,7 +123,7 @@ public class LevelManager : MonoBehaviour
             StopWave(); 
         }
     }
-    // Check what is the current row that can shoot
+
     void CheckRow()
     {
         for (int i = 0; i <= ySize - 1; i++)

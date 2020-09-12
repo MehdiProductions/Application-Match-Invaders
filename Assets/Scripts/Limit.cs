@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Limit : MonoBehaviour
 {
-    //Detects when an alien has hit the side limits for the Wave to know when to go the other way and go down one step.
     public bool detect = true;
 
     private void OnTriggerEnter2D(Collider2D col)
