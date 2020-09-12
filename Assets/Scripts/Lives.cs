@@ -7,7 +7,7 @@ using System;
 public class Lives : MonoBehaviour
 {
 
-    
+    //Health manager
     private int iniHealth;
     private List<Image> hearts = new List<Image>();
 

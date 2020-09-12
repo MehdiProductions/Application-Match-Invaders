@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//Home Menu
 public class Home : MonoBehaviour
 {
     public Text txthighScore;

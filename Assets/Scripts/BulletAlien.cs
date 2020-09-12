@@ -48,7 +48,7 @@ public class BulletAlien : MonoBehaviour
             {
                 Destroy(col.gameObject);
             }
-            col.GetComponent<SpriteRenderer>().color = new Color(0, 0.2f, 0, a -= 0.25f);
+            col.GetComponent<SpriteRenderer>().color = new Color(0, 0.2f, 0, a -= 0.25f); // Lower transparency of the bunkers at each hit
             Destroy(gameObject);
         }
     }

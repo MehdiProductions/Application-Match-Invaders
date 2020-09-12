@@ -7,6 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class MainCharacter : MonoBehaviour
 {
 
+     //MainCharacter Script, also manages UI except for the lives and Post-Processing effects.
     [SerializeField] private float speed;
     
     private GameObject NewHighScore;
@@ -32,7 +33,7 @@ public class MainCharacter : MonoBehaviour
     GameManager GameManager;
 
 
-
+    // Whole UI Score and Highscore logic
 
     public int Score
 
@@ -75,7 +76,7 @@ public class MainCharacter : MonoBehaviour
 
     void Start()
     {
-        
+        // Important to initialise everything for the restart of the game to work propperly, since I reInstance this object.
         speed = GameManager.speedPlayer;
         speed = Mathf.Clamp(speed, 1, 30);
         PositionPlayer = transform.position;
@@ -202,7 +203,7 @@ public class MainCharacter : MonoBehaviour
             NewHighScore500.GetComponent<Text>().color = new Color(1, 0, 0, 0);
             NewHighScore500.GetComponentInChildren<MeshRenderer>().enabled = false;
     }
-
+    // For some reason I couldn't define volume at the start();
     void ImageTemperature()
     {
         PostProcessVolume volume = GameObject.Find("PostProcessing").GetComponent<PostProcessVolume>();
