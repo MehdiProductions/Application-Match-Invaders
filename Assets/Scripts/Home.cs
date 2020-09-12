@@ -14,6 +14,16 @@ public class Home : MonoBehaviour
     }
     public void LoadMainScene()
     {
+        StartCoroutine(WaitToLoad());
+    }
+    
+
+    IEnumerator WaitToLoad()
+    {
+        GameObject.Find("Menu").SetActive(false);
+        GameObject.Find("We come in peace").GetComponent<SpriteRenderer>().enabled = true;
+        GameObject.Find("Space Invaders").GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(3);
         SceneManager.LoadScene("MainScene");
     }
 }

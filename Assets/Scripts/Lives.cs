@@ -39,7 +39,7 @@ public class Lives : MonoBehaviour
 
         for (int i = 0; i < health - 1; i++)
         {
-            Debug.Log("OK");
+            
             heartprefab[i] = Instantiate(heart, new Vector2(175 + transform.position.x + xOffset * i, transform.position.y + yOffset), Quaternion.identity);
             heartprefab[i].transform.localScale *= 2.5f;
             heartprefab[i].transform.parent = transform;
@@ -68,6 +68,7 @@ public class Lives : MonoBehaviour
         {
             heart.sprite = emptyHeart;
             GameOver();
+
         }
 
     }

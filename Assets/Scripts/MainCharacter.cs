@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class MainCharacter : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MainCharacter : MonoBehaviour
     [SerializeField] private float speed;
     public GameObject BulletPrefab;
     private GameObject NewHighScore;
+    private GameObject NewHighScore500;
     public bool CanShoot = true;
     public bool CanMove = true;
     Vector2 PositionPlayer;
@@ -20,6 +22,8 @@ public class MainCharacter : MonoBehaviour
     LevelManager Wave;
     Lives lives;
     bool detect = true;
+    bool almostHS = true;
+    
     
     public int Highscore;
     GameManager GameManager;
@@ -36,16 +40,23 @@ public class MainCharacter : MonoBehaviour
         {
             score = value;
             txtScore.text = "Score: " + score;
-            if (Score > PlayerPrefs.GetInt("HighScore")) 
+            if (Score > PlayerPrefs.GetInt("HighScore"))
             {
-               
+
                 Highscore = Score;
                 txthighScore.text = "HS: " + Highscore;
                 PlayerPrefs.SetInt("HighScore", Highscore);
                 StartCoroutine(newHighscored());
-            }
+                ImageTemperature();
 
-            
+            }
+            if (Score > PlayerPrefs.GetInt("HighScore") - 500 && almostHS && PlayerPrefs.GetInt("HighScore") > 500)
+            {
+
+                NewHighScore500.GetComponent<Text>().text = "ONLY " + (PlayerPrefs.GetInt("HighScore") - Score) + " FOR HIGSHCORE";
+                StartCoroutine(newHighscored500());
+                almostHS = false;
+            }
         }
     }
     private void Awake()
@@ -53,10 +64,12 @@ public class MainCharacter : MonoBehaviour
         transform.name = "Player";
         GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         
+        
     }
 
     void Start()
     {
+        
         speed = GameManager.speedPlayer;
         speed = Mathf.Clamp(speed, 1, 30);
         PositionPlayer = transform.position;
@@ -67,8 +80,12 @@ public class MainCharacter : MonoBehaviour
         txthighScore = GameObject.Find("TxtHighscore").GetComponent<Text>(); 
         txthighScore.text = "HS: " + PlayerPrefs.GetInt("HighScore").ToString();
         NewHighScore = GameObject.Find("NewHighScore");
-        NewHighScore.SetActive(false);
-
+        NewHighScore500 = GameObject.Find("NewHighScore500");
+        NewHighScore.GetComponent<Text>().color = new Color(0, 1, 0, 0);
+        NewHighScore500.GetComponent<Text>().color = new Color(1, 0, 0, 0);
+        Score = 0;
+        txtScore.text = "Score: " + score;
+        InitialImageTemperature();
     }
 
 
@@ -76,6 +93,7 @@ public class MainCharacter : MonoBehaviour
     {
         MovePlayer();
         PlayerShoot();
+        
     }
 
     void MovePlayer()
@@ -156,9 +174,34 @@ public class MainCharacter : MonoBehaviour
     {
         if (Score > 300)
         {
-            NewHighScore.SetActive(true);
+            NewHighScore.GetComponent<Text>().color = new Color(0,1,0,1);
             yield return new WaitForSeconds(1f);
-            NewHighScore.SetActive(false);
+            NewHighScore.GetComponent<Text>().color = new Color(0, 1, 0, 0);
         }
+    }
+
+    IEnumerator newHighscored500()
+    {
+        
+            NewHighScore500.GetComponent<Text>().color = new Color(1, 0, 0, 1);
+            yield return new WaitForSeconds(3f);
+            NewHighScore500.GetComponent<Text>().color = new Color(1, 0, 0, 0);
+        
+    }
+
+    void ImageTemperature()
+    {
+        PostProcessVolume volume = GameObject.Find("PostProcessing").GetComponent<PostProcessVolume>();
+        ColorGrading colorGradingLayer = null;
+        volume.profile.TryGetSettings(out colorGradingLayer);
+        colorGradingLayer.temperature.value = 70;
+    }
+
+    void InitialImageTemperature()
+    {
+        PostProcessVolume volume = GameObject.Find("PostProcessing").GetComponent<PostProcessVolume>();
+        ColorGrading colorGradingLayer = null;
+        volume.profile.TryGetSettings(out colorGradingLayer);
+        colorGradingLayer.temperature.value = -70;
     }
 }

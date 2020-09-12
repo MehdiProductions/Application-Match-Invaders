@@ -62,10 +62,21 @@ public class GameManager : MonoBehaviour
     }
     public void Endgame()
     {
-        endMenuUI.SetActive(true);
+        endMenuUI.SetActive(true);        
         Time.timeScale = 0f;
         txtScore.text = "LAST SCORE: " + GameObject.Find("Player").GetComponent<MainCharacter>().Score;
         txthighScore.text = "HIGH SCORE: " + PlayerPrefs.GetInt("HighScore");
+        if (GameObject.Find("Player").GetComponent<MainCharacter>().Score == PlayerPrefs.GetInt("HighScore"))
+        {
+
+            GameObject.Find("NewHighScoreEndMenu").GetComponent<Text>().color = new Color(0, 1, 0, 1);
+        }
+        else
+        {
+
+            GameObject.Find("NewHighScoreEndMenu").GetComponent<Text>().color = new Color(0, 1, 0, 0);
+        }
+
         GameObject.Find("LevelManager").GetComponent<LevelManager>().ClearScene();
         Destroy(GameObject.Find("LevelManager"));
         Destroy(GameObject.Find("Player"));
@@ -75,6 +86,7 @@ public class GameManager : MonoBehaviour
     }
     public void RestartGame()
     {
+        
         Instantiate(LevelManager, new Vector3(-9, 1, 0), Quaternion.identity);
         Instantiate(Player, new Vector3(0, -4.7f, 0), Quaternion.identity);
         endMenuUI.SetActive(false);
